@@ -59,12 +59,7 @@ module.exports = {
             },
             saveDeployments: true,
         },
-        ganache: {
-            url: "http://localhost:8545",
-            accounts: {
-                mnemonic: MNEMONIC,
-            },
-        },
+      
     },
     etherscan: {
         // Your API key for Etherscan

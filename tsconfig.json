@@ -11,7 +11,8 @@
     "include": [
         "./scripts",
         "./test",
-        "./deploy"
+        "./deploy",
+        "./src"
     ],
     "files": [
         "./hardhat.config.ts",
