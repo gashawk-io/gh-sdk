@@ -6,11 +6,11 @@ import {
 } from "@corpus-ventures/gashawk-common";
 import { ethers } from "ethers";
 import { TransactionReceipt } from "@ethersproject/abstract-provider";
-import { TransactionClient } from "./../http/TransactionClient";
+import { TransactionClient } from "../http/TransactionClient";
 dayjs.extend(duration);
 
-export class TransactionStatus {
-    public static async getStatus(
+export class Status {
+    public static async print(
         id: string,
         token: string,
         provider: ethers.providers.BaseProvider
@@ -28,10 +28,10 @@ export class TransactionStatus {
             t.state === TransactionState.Finalized ||
             t.state === TransactionState.Mined
         ) {
-            //Fake receipt when simulated^Ï
+            //TODO Fake receipt when simulated
             return await provider.getTransactionReceipt(t.transactionHash!);
         }
-        TransactionStatus.printStatusWhenPending(t);
+        Status.printStatusWhenPending(t);
 
         return undefined!;
     }

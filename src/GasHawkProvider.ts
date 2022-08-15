@@ -5,7 +5,7 @@ import {
 import { ethers } from "ethers";
 import { TransactionClient } from "./http/TransactionClient";
 import { v4 as uuidv4 } from "uuid";
-import { TransactionStatus } from "./lib/TransactionStatus";
+import { Status } from "./lib/Status";
 
 export class GasHawkProvider extends ethers.providers.StaticJsonRpcProvider {
     private token: string;
@@ -28,7 +28,6 @@ export class GasHawkProvider extends ethers.providers.StaticJsonRpcProvider {
             | Promise<ethers.providers.BlockTag>
             | undefined
     ): Promise<number> {
-        console.log("get count");
         const addr = await addressOrName;
         const txCount = await new TransactionClient(
             this.token
@@ -62,7 +61,7 @@ export class GasHawkProvider extends ethers.providers.StaticJsonRpcProvider {
             hash: ethers.utils.keccak256(_singedTransaction),
             confirmations: 1,
             wait: async () => {
-                return await TransactionStatus.getStatus(id, this.token, this);
+                return await Status.print(id, this.token, this);
             },
         });
     }
