@@ -12,6 +12,7 @@ import { Deferrable, shallowCopy } from "ethers/lib/utils";
 import { GasHawkProvider } from "./GasHawkProvider";
 import { AuthClient } from "./http/AuthClient";
 import { TransactionClient } from "./http/TransactionClient";
+import { Auth } from "./lib/Auth";
 
 export class Gashawk {
     private signer: ethers.Signer;
@@ -31,7 +32,7 @@ export class Gashawk {
     }
 
     static async fromSigner(signer: ethers.Signer): Promise<Gashawk> {
-        const token = await Gashawk.login(signer);
+        const token = await Auth.login(signer);
         const { defaultDeadlineDuration } = await new TransactionClient(
             token
         ).getUserSettings(await signer.getAddress());
@@ -39,25 +40,6 @@ export class Gashawk {
         return new Gashawk(signer, token, defaultDeadlineDuration);
     }
 
-    public static async login(signer: ethers.Signer) {
-        const createdAt = new Date().getTime();
-
-        const messageSignature = await signer.signMessage(
-            getAuthMessage(createdAt)
-        );
-
-        const newSessionJwt = await new AuthClient().login({
-            createdAt,
-            messageSignature,
-            publicKey: await signer.getAddress(),
-        });
-
-        if (newSessionJwt === null) {
-            throw "login failed";
-        }
-
-        return newSessionJwt;
-    }
     public getProvider() {
         return this.gashawkProvider;
     }
