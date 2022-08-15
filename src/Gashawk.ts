@@ -1,16 +1,13 @@
 import {
-    DEADLINE_DURATION_DEFAULT,
-    getAuthMessage,
-    TransactionWithFee,
+    TransactionWithFee
 } from "@corpus-ventures/gashawk-common";
 import {
     TransactionRequest,
-    TransactionResponse,
+    TransactionResponse
 } from "@ethersproject/abstract-provider";
-import { ethers, logger } from "ethers";
-import { Deferrable, shallowCopy } from "ethers/lib/utils";
-import { GasHawkProvider } from "./GasHawkProvider";
-import { AuthClient } from "./http/AuthClient";
+import { ethers } from "ethers";
+import { Deferrable } from "ethers/lib/utils";
+import { GasHawkProvider } from "./lib/GasHawkProvider";
 import { TransactionClient } from "./http/TransactionClient";
 import { Auth } from "./lib/Auth";
 

@@ -3,12 +3,13 @@ import {
     SubmitableTransaction,
 } from "@corpus-ventures/gashawk-common";
 import { ethers } from "ethers";
-import { TransactionClient } from "./http/TransactionClient";
+import { TransactionClient } from "../http/TransactionClient";
 import { v4 as uuidv4 } from "uuid";
-import { Status } from "./lib/Status";
+import { Status } from "./Status";
+import { TransactionCount } from "./TransactionCount";
 
 export class GasHawkProvider extends ethers.providers.StaticJsonRpcProvider {
-    private token: string;
+    private client: TransactionClient;
     constructor(token: string) {
         super(
             `https://eth-mainnet.alchemyapi.io/v2/fORbbzWLRjURSB-DaH1nx0ovkjLn2maI`,
@@ -18,7 +19,7 @@ export class GasHawkProvider extends ethers.providers.StaticJsonRpcProvider {
             }
         );
 
-        this.token = token;
+        this.client = new TransactionClient(token);
     }
 
     async getTransactionCount(
@@ -28,16 +29,7 @@ export class GasHawkProvider extends ethers.providers.StaticJsonRpcProvider {
             | Promise<ethers.providers.BlockTag>
             | undefined
     ): Promise<number> {
-        const addr = await addressOrName;
-        const txCount = await new TransactionClient(
-            this.token
-        ).getUsersTransactionCount(addr);
-
-        if (txCount === null) {
-            throw Error("cant fetch transaction count");
-        }
-
-        return txCount;
+        return TransactionCount.get(this.client, await addressOrName);
     }
 
     async sendTransaction(
@@ -46,9 +38,7 @@ export class GasHawkProvider extends ethers.providers.StaticJsonRpcProvider {
     ): Promise<ethers.providers.TransactionResponse> {
         const _singedTransaction = await signedTransaction;
         const tx = ethers.utils.parseTransaction(_singedTransaction);
-
         const id = uuidv4();
-
         await this.sendTransactionToGasHawk(
             id,
             _singedTransaction,
@@ -61,7 +51,7 @@ export class GasHawkProvider extends ethers.providers.StaticJsonRpcProvider {
             hash: ethers.utils.keccak256(_singedTransaction),
             confirmations: 1,
             wait: async () => {
-                return await Status.print(id, this.token, this);
+                return await Status.print(id, this.client, this);
             },
         });
     }
@@ -81,9 +71,7 @@ export class GasHawkProvider extends ethers.providers.StaticJsonRpcProvider {
             params: { ...rest },
         };
 
-        await new TransactionClient(this.token).submitTransaction([
-            submitableTransaction,
-        ]);
+        await this.client.submitTransaction([submitableTransaction]);
     }
 }
 

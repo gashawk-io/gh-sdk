@@ -12,10 +12,10 @@ dayjs.extend(duration);
 export class Status {
     public static async print(
         id: string,
-        token: string,
+        client: TransactionClient,
         provider: ethers.providers.BaseProvider
     ): Promise<TransactionReceipt> {
-        const t = await new TransactionClient(token).getTransaction(id);
+        const t = await client.getTransaction(id);
         if (t === null) {
             throw "Cant fetch status";
         }
