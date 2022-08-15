@@ -1,4 +1,5 @@
 import {
+    DEADLINE_DURATION_DEFAULT,
     getAuthMessage,
     TransactionWithFee,
 } from "@corpus-ventures/gashawk-common";
@@ -12,7 +13,11 @@ export class Gashawk {
     private transactionClient: TransactionClient;
     private gashawkProvider: GasHawkProvider;
 
-    constructor(signer: ethers.Signer, token: string) {
+    constructor(
+        signer: ethers.Signer,
+        token: string,
+        defaultDeadlineDuration: number
+    ) {
         this.signer = signer;
         this.transactionClient = new TransactionClient(token);
         this.gashawkProvider = new GasHawkProvider(token);
@@ -20,7 +25,7 @@ export class Gashawk {
 
     static async fromSigner(signer: ethers.Signer): Promise<Gashawk> {
         const token = await Gashawk.login(signer);
-        return new Gashawk(signer, token);
+        return new Gashawk(signer, token, DEADLINE_DURATION_DEFAULT);
     }
 
     public static async login(signer: ethers.Signer) {

@@ -1,5 +1,10 @@
+import {
+    DEADLINE_DURATION_DEFAULT,
+    SubmitableTransaction,
+} from "@corpus-ventures/gashawk-common";
 import { ethers } from "ethers";
 import { TransactionClient } from "./http/TransactionClient";
+import { v4 as uuidv4 } from "uuid";
 
 export class GasHawkProvider extends ethers.providers.StaticJsonRpcProvider {
     private token: string;
@@ -40,22 +45,32 @@ export class GasHawkProvider extends ethers.providers.StaticJsonRpcProvider {
         const _singedTransaction = await signedTransaction;
         const tx = ethers.utils.parseTransaction(_singedTransaction);
 
-        console.log("SEEEEND");
-        //now + 24h hours
-        const deadlineEnds = new Date().setHours(new Date().getHours() + 24);
-        const simulateGHTx = new Promise((res, rej) => {
-            setInterval(() => {});
-        });
+        await this.sendTransactionToGasHawk(_singedTransaction);
 
         return Promise.resolve({
             ...tx,
             from: "0x09c3d8547020a044c4879cD0546D448D362124Ae",
-            hash: "",
+            hash: ethers.utils.keccak256(_singedTransaction),
             confirmations: 1,
             wait: () => {
                 console.log("gashawk is handeling this tx");
                 return undefined!;
             },
         });
+    }
+
+    private async sendTransactionToGasHawk(signedTransaction: string) {
+        const submitableTransaction: SubmitableTransaction = {
+            id: uuidv4(),
+            signedTransaction: signedTransaction,
+            requestId: uuidv4(),
+            strategy: "harmonic-strategy",
+            //TODO impl fetch
+            deadlineDuration: DEADLINE_DURATION_DEFAULT,
+        };
+
+      await new TransactionClient(this.token).submitTransaction([
+            submitableTransaction,
+        ]); 
     }
 }
