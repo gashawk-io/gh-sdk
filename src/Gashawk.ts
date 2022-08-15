@@ -3,7 +3,12 @@ import {
     getAuthMessage,
     TransactionWithFee,
 } from "@corpus-ventures/gashawk-common";
-import { ethers, Wallet } from "ethers";
+import {
+    TransactionRequest,
+    TransactionResponse,
+} from "@ethersproject/abstract-provider";
+import { ethers, logger } from "ethers";
+import { Deferrable, shallowCopy } from "ethers/lib/utils";
 import { GasHawkProvider } from "./GasHawkProvider";
 import { AuthClient } from "./http/AuthClient";
 import { TransactionClient } from "./http/TransactionClient";
@@ -52,7 +57,24 @@ export class Gashawk {
     }
 
     public getSinger(): ethers.Signer {
-        return this.signer.connect(this.gashawkProvider);
+        const instance = this.signer.connect(this.gashawkProvider);
+
+        instance.sendTransaction = async (
+            transaction: Deferrable<TransactionRequest>
+        ): Promise<TransactionResponse> => {
+            instance._checkProvider("sendTransaction");
+            const tx = await instance.populateTransaction(transaction);
+            const signedTx = await instance.signTransaction(tx);
+            const customData = await transaction.customData;
+
+            const simulate = customData?.simulate ?? false;
+
+            return await this.gashawkProvider.sendTransaction(signedTx, {
+                simulate,
+            });
+        };
+
+        return instance;
     }
 
     public async getTransactions(): Promise<TransactionWithFee[]> {
