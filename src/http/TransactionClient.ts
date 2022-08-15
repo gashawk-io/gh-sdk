@@ -2,12 +2,16 @@ import {
     SubmitableTransaction,
     TransactionSummaryData,
     TransactionWithFee,
+    UserSettings,
+    USER_SETTINGS_DEFAULT,
 } from "@corpus-ventures/gashawk-common";
 import { BackendClient } from "./BackendClient";
 
 export class TransactionClient extends BackendClient {
     private TRANSACTION_VIEW_PATH = "/view/tx";
     private SUBMIT_PATH = "/submit";
+    private SETTINGS_PATH = "/user/settings";
+
     private token: string;
 
     constructor(token: string) {
@@ -83,6 +87,20 @@ export class TransactionClient extends BackendClient {
         } catch (e) {
             console.error(e);
             throw new Error("Cant get users transaction count");
+        }
+    }
+
+    public async getUserSettings(user: string): Promise<UserSettings> {
+        const url = `${this.SETTINGS_PATH}`;
+        try {
+            const { data } = await this.client.get(url, {
+                params: { user },
+                ...this.getAuth(),
+            });
+            return data;
+        } catch (err) {
+            console.log(err);
+            return USER_SETTINGS_DEFAULT;
         }
     }
 }

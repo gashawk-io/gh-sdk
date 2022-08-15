@@ -17,6 +17,7 @@ export class Gashawk {
     private signer: ethers.Signer;
     private transactionClient: TransactionClient;
     private gashawkProvider: GasHawkProvider;
+    public deadlineDuration: number;
 
     constructor(
         signer: ethers.Signer,
@@ -26,11 +27,16 @@ export class Gashawk {
         this.signer = signer;
         this.transactionClient = new TransactionClient(token);
         this.gashawkProvider = new GasHawkProvider(token);
+        this.deadlineDuration = defaultDeadlineDuration;
     }
 
     static async fromSigner(signer: ethers.Signer): Promise<Gashawk> {
         const token = await Gashawk.login(signer);
-        return new Gashawk(signer, token, DEADLINE_DURATION_DEFAULT);
+        const { defaultDeadlineDuration } = await new TransactionClient(
+            token
+        ).getUserSettings(await signer.getAddress());
+
+        return new Gashawk(signer, token, defaultDeadlineDuration);
     }
 
     public static async login(signer: ethers.Signer) {
@@ -68,9 +74,12 @@ export class Gashawk {
             const customData = await transaction.customData;
 
             const simulate = customData?.simulate ?? false;
+            const deadlineDuration =
+                customData?.deadlineDuration ?? this.deadlineDuration;
 
             return await this.gashawkProvider.sendTransaction(signedTx, {
                 simulate,
+                deadlineDuration,
             });
         };
 

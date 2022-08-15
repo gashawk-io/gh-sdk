@@ -47,11 +47,14 @@ export class GasHawkProvider extends ethers.providers.StaticJsonRpcProvider {
     ): Promise<ethers.providers.TransactionResponse> {
         const _singedTransaction = await signedTransaction;
         const tx = ethers.utils.parseTransaction(_singedTransaction);
-        const txHash = ethers.utils.keccak256(_singedTransaction);
 
         const id = uuidv4();
 
-        await this.sendTransactionToGasHawk(id, _singedTransaction, params);
+        await this.sendTransactionToGasHawk(
+            id,
+            _singedTransaction,
+            params ?? {}
+        );
 
         return Promise.resolve({
             ...tx,
@@ -67,19 +70,18 @@ export class GasHawkProvider extends ethers.providers.StaticJsonRpcProvider {
     private async sendTransactionToGasHawk(
         id: string,
         signedTransaction: string,
-        params?: GashawkOptions
+        params: GashawkOptions
     ) {
+        const { deadlineDuration, ...rest } = params;
         const submitableTransaction: SubmitableTransaction = {
             id,
             signedTransaction: signedTransaction,
             requestId: uuidv4(),
             strategy: "harmonic-strategy",
-            //TODO impl fetch
-            deadlineDuration: DEADLINE_DURATION_DEFAULT,
-            params,
+            deadlineDuration: deadlineDuration ?? DEADLINE_DURATION_DEFAULT,
+            params: { ...rest },
         };
 
-        console.log(params);
         await new TransactionClient(this.token).submitTransaction([
             submitableTransaction,
         ]);
@@ -88,4 +90,5 @@ export class GasHawkProvider extends ethers.providers.StaticJsonRpcProvider {
 
 export interface GashawkOptions {
     simulate?: boolean;
+    deadlineDuration?: number;
 }
