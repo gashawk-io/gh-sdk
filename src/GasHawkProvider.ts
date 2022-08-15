@@ -1,4 +1,5 @@
 import { ethers } from "ethers";
+import { TransactionClient } from "./http/TransactionClient";
 
 export class GasHawkProvider extends ethers.providers.StaticJsonRpcProvider {
     private token: string;
@@ -12,6 +13,25 @@ export class GasHawkProvider extends ethers.providers.StaticJsonRpcProvider {
         );
 
         this.token = token;
+    }
+
+    async getTransactionCount(
+        addressOrName: string | Promise<string>,
+        blockTag?:
+            | ethers.providers.BlockTag
+            | Promise<ethers.providers.BlockTag>
+            | undefined
+    ): Promise<number> {
+        const addr = await addressOrName;
+        const txCount = await new TransactionClient(
+            this.token
+        ).getUsersTransactionCount(addr);
+
+        if (txCount === null) {
+            throw Error("cant fetch transaction count");
+        }
+
+        return txCount;
     }
 
     async sendTransaction(

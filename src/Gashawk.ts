@@ -18,14 +18,6 @@ export class Gashawk {
         this.gashawkProvider = new GasHawkProvider(token);
     }
 
-    public getProvider() {
-        return this.gashawkProvider;
-    }
-
-    public getSinger(): ethers.Signer {
-        return this.signer.connect(this.gashawkProvider);
-    }
-
     static async fromSigner(signer: ethers.Signer): Promise<Gashawk> {
         const token = await Gashawk.login(signer);
         return new Gashawk(signer, token);
@@ -49,6 +41,13 @@ export class Gashawk {
         }
 
         return newSessionJwt;
+    }
+    public getProvider() {
+        return this.gashawkProvider;
+    }
+
+    public getSinger(): ethers.Signer {
+        return this.signer.connect(this.gashawkProvider);
     }
 
     public async getTransactions(): Promise<TransactionWithFee[]> {
