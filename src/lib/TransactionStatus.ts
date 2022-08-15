@@ -1,0 +1,53 @@
+import dayjs from "dayjs";
+import duration from "dayjs/plugin/duration";
+import {
+    TransactionState,
+    TransactionWithFee,
+} from "@corpus-ventures/gashawk-common";
+import { ethers } from "ethers";
+import { TransactionReceipt } from "@ethersproject/abstract-provider";
+import { TransactionClient } from "./../http/TransactionClient";
+dayjs.extend(duration);
+
+export class TransactionStatus {
+    public static async getStatus(
+        id: string,
+        token: string,
+        provider: ethers.providers.BaseProvider
+    ): Promise<TransactionReceipt> {
+        const t = await new TransactionClient(token).getTransaction(id);
+        if (t === null) {
+            throw "Cant fetch status";
+        }
+
+        if (t.state === TransactionState.Failed) {
+            throw `transaction ${id} failed`;
+        }
+
+        if (
+            t.state === TransactionState.Finalized ||
+            t.state === TransactionState.Mined
+        ) {
+            //Fake receipt when simulated^Ï
+            return await provider.getTransactionReceipt(t.transactionHash!);
+        }
+        TransactionStatus.printStatusWhenPending(t);
+
+        return undefined!;
+    }
+
+    private static printStatusWhenPending(t: TransactionWithFee) {
+        const now = dayjs(Date.now());
+        const deadlineDate = dayjs(t.pendingSince).add(
+            t.deadlineDuration,
+            "ms"
+        );
+
+        const duration = dayjs.duration(deadlineDate.diff(now));
+        console.log(
+            `The transaction ${t.transactionHash} is handled by GasHawk`
+        );
+        console.log(`State : ${t.state}`);
+        console.log(`Time remaining ${duration.format("HH:mm:ss")}`);
+    }
+}

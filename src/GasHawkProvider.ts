@@ -5,6 +5,7 @@ import {
 import { ethers } from "ethers";
 import { TransactionClient } from "./http/TransactionClient";
 import { v4 as uuidv4 } from "uuid";
+import { TransactionStatus } from "./lib/TransactionStatus";
 
 export class GasHawkProvider extends ethers.providers.StaticJsonRpcProvider {
     private token: string;
@@ -46,6 +47,7 @@ export class GasHawkProvider extends ethers.providers.StaticJsonRpcProvider {
     ): Promise<ethers.providers.TransactionResponse> {
         const _singedTransaction = await signedTransaction;
         const tx = ethers.utils.parseTransaction(_singedTransaction);
+        const txHash = ethers.utils.keccak256(_singedTransaction);
 
         const id = uuidv4();
 
@@ -57,8 +59,7 @@ export class GasHawkProvider extends ethers.providers.StaticJsonRpcProvider {
             hash: ethers.utils.keccak256(_singedTransaction),
             confirmations: 1,
             wait: async () => {
-                await this.getTransactionStatus(id);
-                return undefined!;
+                return await TransactionStatus.getStatus(id, this.token, this);
             },
         });
     }
@@ -82,15 +83,6 @@ export class GasHawkProvider extends ethers.providers.StaticJsonRpcProvider {
         await new TransactionClient(this.token).submitTransaction([
             submitableTransaction,
         ]);
-    }
-
-    private async getTransactionStatus(id: string) {
-        const s = await new TransactionClient(this.token).getTransaction(id);
-        if (s === null) {
-            throw "Cant fetch tx";
-        }
-        console.log("gashawk is handeling this ");
-        console.log(s.state, s.pendingSince, s.deadlineDuration);
     }
 }
 
