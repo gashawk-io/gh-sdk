@@ -1,7 +1,7 @@
-import { TransactionClient } from "src/http/TransactionClient";
+import { GashawkClient } from "../http/GashawkClient";
 
 export class TransactionCount {
-    public static async get(client: TransactionClient, address: string) {
+    public static async get(client: GashawkClient, address: string) {
         const txCount = await client.getUsersTransactionCount(address);
 
         if (txCount === null) {

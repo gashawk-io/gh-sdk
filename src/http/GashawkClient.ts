@@ -1,21 +1,25 @@
 import {
+    LoginPayload,
     SubmitableTransaction,
-    TransactionSummaryData,
     TransactionWithFee,
     UserSettings,
     USER_SETTINGS_DEFAULT,
 } from "@corpus-ventures/gashawk-common";
-import { BackendClient } from "./BackendClient";
+import axios, { Axios } from "axios";
 
-export class TransactionClient extends BackendClient {
+export class GashawkClient {
     private TRANSACTION_VIEW_PATH = "/view/tx";
     private SUBMIT_PATH = "/submit";
     private SETTINGS_PATH = "/user/settings";
 
     private token: string;
+    private BACKEND_URL = process.env.BACKEND_URL;
+    protected client: Axios;
 
     constructor(token: string) {
-        super();
+        this.client = axios.create({
+            baseURL: this.BACKEND_URL,
+        });
         this.token = token;
     }
 

@@ -1,8 +1,16 @@
 import { LoginPayload } from "@corpus-ventures/gashawk-common";
-import { BackendClient } from "./BackendClient";
+import axios, { Axios } from "axios";
 
-export class AuthClient extends BackendClient {
+export class AuthClient {
+    protected client: Axios;
+    private BACKEND_URL = process.env.BACKEND_URL;
     private AUTH_PATH = "/auth";
+
+    constructor() {
+        this.client = axios.create({
+            baseURL: this.BACKEND_URL,
+        });
+    }
 
     public async login(loginPayload: LoginPayload): Promise<string | null> {
         const url = `${this.AUTH_PATH}/login`;

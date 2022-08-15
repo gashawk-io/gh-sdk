@@ -1,19 +1,17 @@
-import {
-    TransactionWithFee
-} from "@corpus-ventures/gashawk-common";
+import { TransactionWithFee } from "@corpus-ventures/gashawk-common";
 import {
     TransactionRequest,
-    TransactionResponse
+    TransactionResponse,
 } from "@ethersproject/abstract-provider";
 import { ethers } from "ethers";
 import { Deferrable } from "ethers/lib/utils";
 import { GasHawkProvider } from "./lib/GasHawkProvider";
-import { TransactionClient } from "./http/TransactionClient";
+import { GashawkClient } from "./http/GashawkClient";
 import { Auth } from "./lib/Auth";
 
 export class Gashawk {
     private signer: ethers.Signer;
-    private transactionClient: TransactionClient;
+    private client: GashawkClient;
     private gashawkProvider: GasHawkProvider;
     public deadlineDuration: number;
 
@@ -23,14 +21,14 @@ export class Gashawk {
         defaultDeadlineDuration: number
     ) {
         this.signer = signer;
-        this.transactionClient = new TransactionClient(token);
+        this.client = new GashawkClient(token);
         this.gashawkProvider = new GasHawkProvider(token);
         this.deadlineDuration = defaultDeadlineDuration;
     }
 
     static async fromSigner(signer: ethers.Signer): Promise<Gashawk> {
         const token = await Auth.login(signer);
-        const { defaultDeadlineDuration } = await new TransactionClient(
+        const { defaultDeadlineDuration } = await new GashawkClient(
             token
         ).getUserSettings(await signer.getAddress());
 
@@ -66,7 +64,7 @@ export class Gashawk {
     }
 
     public async getTransactions(): Promise<TransactionWithFee[]> {
-        const txs = await this.transactionClient.getTransactions();
+        const txs = await this.client.getTransactions();
 
         if (txs === null) {
             throw "an error occrured fetching transactions";

@@ -6,13 +6,13 @@ import {
 } from "@corpus-ventures/gashawk-common";
 import { ethers } from "ethers";
 import { TransactionReceipt } from "@ethersproject/abstract-provider";
-import { TransactionClient } from "../http/TransactionClient";
+import { GashawkClient } from "../http/GashawkClient";
 dayjs.extend(duration);
 
 export class Status {
     public static async print(
         id: string,
-        client: TransactionClient,
+        client: GashawkClient,
         provider: ethers.providers.BaseProvider
     ): Promise<TransactionReceipt> {
         const t = await client.getTransaction(id);

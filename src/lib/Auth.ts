@@ -1,6 +1,6 @@
 import { getAuthMessage } from "@corpus-ventures/gashawk-common";
 import { ethers } from "ethers";
-import { AuthClient } from "src/http/AuthClient";
+import { AuthClient } from "../http/AuthClient";
 
 export class Auth {
     public static async login(signer: ethers.Signer) {

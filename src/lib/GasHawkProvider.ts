@@ -3,13 +3,13 @@ import {
     SubmitableTransaction,
 } from "@corpus-ventures/gashawk-common";
 import { ethers } from "ethers";
-import { TransactionClient } from "../http/TransactionClient";
+import { GashawkClient } from "../http/GashawkClient";
 import { v4 as uuidv4 } from "uuid";
 import { Status } from "./Status";
 import { TransactionCount } from "./TransactionCount";
 
 export class GasHawkProvider extends ethers.providers.StaticJsonRpcProvider {
-    private client: TransactionClient;
+    private client: GashawkClient;
     constructor(token: string) {
         super(
             `https://eth-mainnet.alchemyapi.io/v2/fORbbzWLRjURSB-DaH1nx0ovkjLn2maI`,
@@ -19,7 +19,7 @@ export class GasHawkProvider extends ethers.providers.StaticJsonRpcProvider {
             }
         );
 
-        this.client = new TransactionClient(token);
+        this.client = new GashawkClient(token);
     }
 
     async getTransactionCount(
