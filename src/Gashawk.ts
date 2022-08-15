@@ -18,21 +18,29 @@ export class Gashawk {
     constructor(
         signer: ethers.Signer,
         token: string,
-        defaultDeadlineDuration: number
+        defaultDeadlineDuration: number,
+        baseUrl: string
     ) {
         this.signer = signer;
         this.client = new GashawkClient(token);
-        this.gashawkProvider = new GasHawkProvider(token);
         this.deadlineDuration = defaultDeadlineDuration;
+
+        //A signer without a provider is not supported
+        signer._checkProvider();
+
+        this.gashawkProvider = new GasHawkProvider(token, baseUrl);
     }
 
-    static async fromSigner(signer: ethers.Signer): Promise<Gashawk> {
+    static async fromSigner(
+        signer: ethers.Signer,
+        baseUrl: string
+    ): Promise<Gashawk> {
         const token = await Auth.login(signer);
         const { defaultDeadlineDuration } = await new GashawkClient(
             token
         ).getUserSettings(await signer.getAddress());
 
-        return new Gashawk(signer, token, defaultDeadlineDuration);
+        return new Gashawk(signer, token, defaultDeadlineDuration, baseUrl);
     }
 
     public getProvider() {

@@ -2,23 +2,17 @@ import {
     DEADLINE_DURATION_DEFAULT,
     SubmitableTransaction,
 } from "@corpus-ventures/gashawk-common";
-import { ethers } from "ethers";
+import { ethers, providers } from "ethers";
 import { GashawkClient } from "../http/GashawkClient";
 import { v4 as uuidv4 } from "uuid";
 import { Status } from "./Status";
 import { TransactionCount } from "./TransactionCount";
+import { GashawkOptions } from "../types";
 
 export class GasHawkProvider extends ethers.providers.StaticJsonRpcProvider {
     private client: GashawkClient;
-    constructor(token: string) {
-        super(
-            `https://eth-mainnet.alchemyapi.io/v2/fORbbzWLRjURSB-DaH1nx0ovkjLn2maI`,
-            {
-                chainId: 1,
-                name: "mainnet",
-            }
-        );
-
+    constructor(token: string, baseUrl: string) {
+        super(baseUrl);
         this.client = new GashawkClient(token);
     }
 
@@ -73,9 +67,4 @@ export class GasHawkProvider extends ethers.providers.StaticJsonRpcProvider {
 
         await this.client.submitTransaction([submitableTransaction]);
     }
-}
-
-export interface GashawkOptions {
-    simulate?: boolean;
-    deadlineDuration?: number;
 }
