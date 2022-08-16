@@ -1,5 +1,5 @@
 {
-    "name": "typescript-eth-solidity-hardhat-template",
+    "name": "gashawk.sdk",
     "version": "1.0.0",
     "description": "",
     "scripts": {
@@ -18,7 +18,7 @@
         "LICENSE",
         "README.md"
     ],
-    "author": "Kristjan Kosic <kristjan@protokol.com>",
+    "author": "Alex Plutta <alex@corpus.ventures.io>",
     "license": "MIT",
     "devDependencies": {
         "@nomiclabs/hardhat-ethers": "^2.0.5",

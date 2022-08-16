@@ -8,6 +8,7 @@ import { Deferrable } from "ethers/lib/utils";
 import { GasHawkProvider } from "./lib/GasHawkProvider";
 import { GashawkClient } from "./http/GashawkClient";
 import { Auth } from "./lib/Auth";
+import { Transaction } from "./lib/Transaction";
 
 export class Gashawk {
     private signer: ethers.Signer;
@@ -71,13 +72,11 @@ export class Gashawk {
         return instance;
     }
 
-    public async getTransactions(): Promise<TransactionWithFee[]> {
-        const txs = await this.client.getTransactions();
+    public async getAllTransactions(): Promise<TransactionWithFee[]> {
+        return await Transaction.getAll(this.client);
+    }
 
-        if (txs === null) {
-            throw "an error occrured fetching transactions";
-        }
-
-        return txs;
+    public async getTransaction(id: string): Promise<TransactionWithFee> {
+        return await Transaction.get(this.client, id);
     }
 }
