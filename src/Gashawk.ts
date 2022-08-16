@@ -79,4 +79,17 @@ export class Gashawk {
     public async getTransaction(id: string): Promise<TransactionWithFee> {
         return await Transaction.get(this.client, id);
     }
+    public wait(tx: ethers.providers.TransactionResponse) {
+        return new Promise((res, _) => {
+            const timeout = setTimeout(() => {}, 86400000);
+            setInterval(async () => {
+                const finish = await tx.wait();
+                if (finish !== undefined) {
+                    console.log("Transaction is now mined");
+                    clearTimeout(timeout);
+                    res(undefined);
+                }
+            }, 1000);
+        });
+    }
 }

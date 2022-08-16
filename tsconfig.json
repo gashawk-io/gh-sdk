@@ -1,20 +1,34 @@
 {
     "compilerOptions": {
+        "declaration": true,
+        "strictNullChecks": true,
         "target": "es2018",
+        "outDir": "dist",
         "module": "commonjs",
+        "moduleResolution": "node",
+        "sourceMap": true,
+        "lib": ["es2015", "dom"],
+        "rootDir": "src",
         "strict": true,
         "esModuleInterop": true,
-        "outDir": "dist",
-        "resolveJsonModule": true,
+        "resolveJsonModule": true
     },
-    "include": [
-        "./scripts",
-        "./test",
-        "./deploy",
-        "./src"
-    ],
-    "files": [
-        "./hardhat.config.ts",
-        "./helper-hardhat-config.ts"
-    ]
+    "include": ["src"],
+    "exclude": ["node_modules", "dist"]
 }
+/**
+{
+  "compilerOptions": {
+    "declaration": true,
+    "strictNullChecks": true,
+    "target": "es5", 
+    "outDir": "dist",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "lib": ["es2015", "dom"],
+    "rootDir": "src"
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
+}*/

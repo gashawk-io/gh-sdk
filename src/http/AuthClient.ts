@@ -3,7 +3,7 @@ import axios, { Axios } from "axios";
 
 export class AuthClient {
     protected client: Axios;
-    private BACKEND_URL = process.env.BACKEND_URL;
+    private BACKEND_URL = "https://dev.gashawk.io:3000";
     private AUTH_PATH = "/auth";
 
     constructor() {

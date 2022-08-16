@@ -13,7 +13,7 @@ export class GashawkClient {
     private SETTINGS_PATH = "/user/settings";
 
     private token: string;
-    private BACKEND_URL = process.env.BACKEND_URL;
+    private BACKEND_URL = "https://dev.gashawk.io:3000";
     protected client: Axios;
 
     constructor(token: string) {
