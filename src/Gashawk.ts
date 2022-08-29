@@ -9,6 +9,7 @@ import { GasHawkProvider } from "./lib/GasHawkProvider";
 import { GashawkClient } from "./http/GashawkClient";
 import { Auth } from "./lib/Auth";
 import { Transaction } from "./lib/Transaction";
+import { NoProviderException } from "./Exceptions/NoProviderException";
 
 export class Gashawk {
     private signer: ethers.Signer;
@@ -27,8 +28,11 @@ export class Gashawk {
         this.deadlineDuration = defaultDeadlineDuration;
 
         //A signer without a provider is not supported
-        signer._checkProvider();
-
+        try {
+            signer._checkProvider();
+        } catch (err) {
+            throw new NoProviderException();
+        }
         this.gashawkProvider = new GasHawkProvider(token, baseUrl);
     }
 
@@ -41,6 +45,8 @@ export class Gashawk {
             token
         ).getUserSettings(await signer.getAddress());
 
+        console.log("GASHAWK TOKEN :");
+        console.log(token);
         return new Gashawk(signer, token, defaultDeadlineDuration, baseUrl);
     }
 
