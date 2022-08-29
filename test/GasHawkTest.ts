@@ -3,6 +3,7 @@ import { ethers } from "hardhat";
 import { Signer, Wallet } from "ethers";
 import { expect } from "chai";
 import { NoProviderException } from "../src/Exceptions/NoProviderException";
+import exp from "constants";
 
 describe("Gashawk Test", () => {
     let signer: Signer;
@@ -12,18 +13,18 @@ describe("Gashawk Test", () => {
     });
     describe("constructor", () => {
         it("Create new Gashawk instance when provider is defined", async () => {
-            expect(
-                async () =>
-                    await Gashawk.fromSigner(signer, "www.example-rpc.com")
-            ).to.not.throw;
+            const gh = await Gashawk.fromSigner(signer, "www.example-rpc.com");
+            expect(gh).to.be.instanceOf(Gashawk);
         });
         it("Throw an exception if the signer has no provider", async () => {
             const signer = Wallet.createRandom();
 
-            expect(
-                async () =>
-                    await Gashawk.fromSigner(signer, "www.example-rpc.com")
-            ).to.throw;
+            try {
+                await Gashawk.fromSigner(signer, "www.example-rpc.com");
+                expect.fail("method should have thrown");
+            } catch (e) {
+                expect(e).to.be.instanceOf(NoProviderException);
+            }
         });
     });
 });

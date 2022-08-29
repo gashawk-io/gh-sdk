@@ -1,12 +1,12 @@
-import { getAuthMessage, LoginPayload } from "@corpus-ventures/gashawk-common";
+import { LoginPayload } from "@corpus-ventures/gashawk-common";
+import chai from "chai";
 import { Signer } from "ethers";
 import { ethers } from "hardhat";
+import LoginFailedException from "../../src/Exceptions/LoginFailedException";
 import { AuthClient } from "../../src/http/AuthClient";
 import { Auth } from "../../src/lib/Auth";
-import LoginFailedException from "../../src/Exceptions/LoginFailedException";
-import chai from "chai";
 
-describe.only("Auth", () => {
+describe("Auth", () => {
     let expect: Chai.ExpectStatic;
     before(() => {
         chai.use(require("chai-as-promised"));

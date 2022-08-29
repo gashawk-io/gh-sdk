@@ -45,8 +45,9 @@ export class Gashawk {
             token
         ).getUserSettings(await signer.getAddress());
 
-        console.log("GASHAWK TOKEN :");
+        console.log("Created new Gashawk session with the token :");
         console.log(token);
+        console.log("Go to https://dev-fe.gashawk.io/ and login by pasting the token to");
         return new Gashawk(signer, token, defaultDeadlineDuration, baseUrl);
     }
 
