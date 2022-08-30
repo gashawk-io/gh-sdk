@@ -30,15 +30,15 @@ export class GasHawkProvider extends ethers.providers.StaticJsonRpcProvider {
         signedTransaction: string | Promise<string>,
         params?: GashawkOptions
     ): Promise<ethers.providers.TransactionResponse> {
-        const _singedTransaction = await signedTransaction;
-        const tx = ethers.utils.parseTransaction(_singedTransaction);
+        const _signedTransaction = await signedTransaction;
+        const tx = ethers.utils.parseTransaction(_signedTransaction);
         const id = uuidv4();
         await this.sendTransactionToGasHawk(
             id,
-            _singedTransaction,
+            _signedTransaction,
             params ?? {}
         );
-        const hash = ethers.utils.keccak256(_singedTransaction);
+        const hash = ethers.utils.keccak256(_signedTransaction);
         
         console.log(`Transaction ${hash} was send to GasHawk`);
         return Promise.resolve({
