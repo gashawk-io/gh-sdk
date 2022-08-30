@@ -11,6 +11,7 @@ import { Auth } from "./lib/Auth";
 import { Transaction } from "./lib/Transaction";
 import { NoProviderException } from "./Exceptions/NoProviderException";
 
+//TODO Add TS doc
 export class Gashawk {
     private signer: ethers.Signer;
     private client: GashawkClient;
@@ -44,10 +45,7 @@ export class Gashawk {
         const { defaultDeadlineDuration } = await new GashawkClient(
             token
         ).getUserSettings(await signer.getAddress());
-
-        console.log("Created new Gashawk session with the token :");
-        console.log(token);
-        console.log("Go to https://dev-fe.gashawk.io/ and login by pasting the token to");
+        this.log(token);
         return new Gashawk(signer, token, defaultDeadlineDuration, baseUrl);
     }
 
@@ -98,5 +96,14 @@ export class Gashawk {
                 }
             }, 1000);
         });
+    }
+    private static log(token: string) {
+        const link = `https://dev-fe.gashawk.io/#/token?jwt=${token}`;
+
+        console.log(
+            "Open the link to see your transaction in the GasHawk Web App \n"
+        );
+        console.log(link);
+        console.log("\n");
     }
 }
