@@ -1,6 +1,6 @@
 {
     "name": "@corpus-ventures/gashawk-sdk",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "description": "",
     "scripts": {
         "compile": "hardhat compile",
