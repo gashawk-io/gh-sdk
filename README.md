@@ -28,7 +28,7 @@ const gashawk = await Gashawk.fromSigner(signer, PROVIDER_URL);
 Now you can get a signer object you can use as you are used to with ethers. Just pass it instead of the default ethers signer.
 
 ```ts
- const gashawkSigner = gashawk.getSinger();
+ const gashawkSigner = gashawk.getSigner();
  ```
 
 # Track your transactions
@@ -71,7 +71,7 @@ You can use Gashawk to save Gas during your smart contract deployments. This sec
     });
 ```
 
-## Value transaction
+## Simple ETH transfer
 
 The following snippets use Gashawk to send Ether from your account to another.
 

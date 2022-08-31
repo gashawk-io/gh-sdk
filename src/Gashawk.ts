@@ -11,7 +11,6 @@ import { Auth } from "./lib/Auth";
 import { Transaction } from "./lib/Transaction";
 import { NoProviderException } from "./Exceptions/NoProviderException";
 
-//TODO Add TS doc
 export class Gashawk {
     private signer: ethers.Signer;
     private client: GashawkClient;
@@ -53,7 +52,7 @@ export class Gashawk {
         return this.gashawkProvider;
     }
 
-    public getSinger(): ethers.Signer {
+    public getSigner(): ethers.Signer {
         const instance = this.signer.connect(this.gashawkProvider);
 
         instance.sendTransaction = async (
