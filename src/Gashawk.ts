@@ -44,7 +44,7 @@ export class Gashawk {
         const { defaultDeadlineDuration } = await new GashawkClient(
             token
         ).getUserSettings(await signer.getAddress());
-        this.log(token);
+        this.logTokenLink(token);
         return new Gashawk(signer, token, defaultDeadlineDuration, baseUrl);
     }
 
@@ -96,7 +96,7 @@ export class Gashawk {
             }, 1000);
         });
     }
-    private static log(token: string) {
+    private static logTokenLink(token: string) {
         const link = `https://dev-fe.gashawk.io/#/token?jwt=${token}`;
 
         console.log(
