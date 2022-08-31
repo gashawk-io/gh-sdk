@@ -40,7 +40,7 @@ After you've created a new Gashawk instance, you can find a link in your termina
 
 The GasHawk instance has a method called wait attached. It can be used to await the process until the transaction is mined. This method is similar to ethers wait method.
 
-# Query GasHawk
+## Query GasHawk
 
 You can either Query all transactions or a transaction with a certain ID
 ```ts
@@ -87,8 +87,6 @@ The following snippets use Gashawk to send Ether from your account to another.
 ```
 
 ## Contract Interaction
-
-Contract Interaction
 
 To use GasHawk for interacting with other smart contracts create a Contract instance with the GasHawk signer as the signer.
 
