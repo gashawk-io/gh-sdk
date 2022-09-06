@@ -35,23 +35,34 @@ export class Gashawk {
         }
         this.gashawkProvider = new GasHawkProvider(token, baseUrl);
     }
-
+    /**
+     * Creates an instance of the GasHawk SDK based on  ethers Signer class.
+     * If no token is provided, GasHawk will create a new session based on your account
+     * @params signer The signer that you want to do transaction with.
+     * @params baseUrl baseUrl of a web3Provider.
+     * @params token A GasHawk Session token.
+     */
     static async fromSigner(
         signer: ethers.Signer,
-        baseUrl: string
+        baseUrl: string,
+        token?: string | undefined
     ): Promise<Gashawk> {
-        const token = await Auth.login(signer);
+        const _token = await Auth.login(signer);
         const { defaultDeadlineDuration } = await new GashawkClient(
-            token
+            _token
         ).getUserSettings(await signer.getAddress());
-        this.logTokenLink(token);
-        return new Gashawk(signer, token, defaultDeadlineDuration, baseUrl);
+        this.logTokenLink(_token);
+        return new Gashawk(signer, _token, defaultDeadlineDuration, baseUrl);
     }
-
+    /**
+     * Returns an instance of the Web3 Provider. Note that this instance does intercepts "getTransactionCount" and "sendTransaction"
+     */
     public getProvider() {
         return this.gashawkProvider;
     }
-
+    /**
+     * Returns an instance of the Ethers signer. This instance can be used to Send Ether or be passed to ethers.Contract or ethers.ContractFactory. When this Signer is used transactions will be sent to GasHawk instead to the public mempool
+     */
     public getSigner(): ethers.Signer {
         const instance = this.signer.connect(this.gashawkProvider);
 
@@ -75,14 +86,23 @@ export class Gashawk {
 
         return instance;
     }
-
+    /**
+     * Returns all transactions that are managed by GasHawk
+     */
     public async getAllTransactions(): Promise<TransactionWithFee[]> {
         return await Transaction.getAll(this.client);
     }
-
+    /**
+     * Returns a transaction
+     * @params id the transaction id
+     */
     public async getTransaction(id: string): Promise<TransactionWithFee> {
         return await Transaction.get(this.client, id);
     }
+    /**
+     * Use this function to block the process until the transaction was processed by GasHawk.
+     * @params tx ethers.TransactionResponse
+     */
     public wait(tx: ethers.providers.TransactionResponse) {
         return new Promise((res, _) => {
             const timeout = setTimeout(() => {}, 86400000);
