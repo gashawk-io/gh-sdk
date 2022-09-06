@@ -46,6 +46,11 @@ describe("Auth", () => {
             } as unknown as AuthClient;
 
             try {
+                //Waiting a second until we accept th terms
+                setTimeout(() => {
+                    process.stdin.push("yes");
+                    process.stdin.push("\x0D"); //Enter escape char
+                }, 1000);
                 await Auth.login(signer, authClientMock);
                 expect.fail("method should have thrown");
             } catch (e) {

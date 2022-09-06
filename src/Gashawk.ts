@@ -47,7 +47,7 @@ export class Gashawk {
         baseUrl: string,
         token?: string | undefined
     ): Promise<Gashawk> {
-        const _token = await Auth.login(signer);
+        const _token = token ?? (await Auth.login(signer));
         const { defaultDeadlineDuration } = await new GashawkClient(
             _token
         ).getUserSettings(await signer.getAddress());

@@ -46,7 +46,7 @@ export class Auth {
 
         return new Promise((res) => {
             rl.question(
-                "Do you accept the Terms of Service ? Press y or yes",
+                "Do you accept the Terms of Service ? Press y or yes to accept\n",
                 (input: string) => {
                     if (
                         input.toLowerCase() === "y" ||

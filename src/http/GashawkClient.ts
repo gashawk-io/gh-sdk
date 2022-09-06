@@ -57,7 +57,6 @@ export class GashawkClient {
     public async submitTransaction(
         submitableTransactions: SubmitableTransaction[]
     ): Promise<boolean> {
-        //TODO refactor backend path when implementation is known
         const url = this.SUBMIT_PATH;
         try {
             const { data, status } = await this.client.post(
