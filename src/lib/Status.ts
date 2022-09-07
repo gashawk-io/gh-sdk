@@ -24,15 +24,34 @@ export class Status {
             throw `transaction ${id} failed`;
         }
 
+        if (t.state === TransactionState.Prepared) {
+            return Status.printStatusWhenPrepared(t);
+        }
+
+        if (t.state === TransactionState.Pending) {
+            return Status.printStatusWhenPending(t);
+        }
+        if (t.state === TransactionState.Submitted) {
+            return Status.printStatusWhenSubmitted(t);
+        }
+
+        const simulate = (t.params as { simulate: boolean })?.simulate === true;
+
         if (
-            t.state === TransactionState.Finalized ||
+            (t.state === TransactionState.Finalized && !simulate) ||
             t.state === TransactionState.Mined
         ) {
-            //TODO Fake receipt when simulated
             return await provider.getTransactionReceipt(t.transactionHash!);
         }
-        Status.printStatusWhenPending(t);
 
+        if (t.state === TransactionState.Finalized && simulate) {
+            return Status.printStatusWhenSimulated(t);
+        }
+        return undefined!;
+    }
+
+    private static printStatusWhenPrepared(t: TransactionWithFee) {
+        console.log(`Transaction ${t.transactionHash} is currently paused`);
         return undefined!;
     }
 
@@ -49,5 +68,20 @@ export class Status {
         );
         console.log(`State : ${t.state}`);
         console.log(`Time remaining ${duration.format("HH:mm:ss")}`);
+        return undefined!;
+    }
+
+    private static printStatusWhenSubmitted(t: TransactionWithFee) {
+        console.log(
+            `Gashawk has submitted Transaction ${t.transactionHash}. It should now be mined soon`
+        );
+        return undefined!;
+    }
+
+    private static printStatusWhenSimulated(t: TransactionWithFee) {
+        console.log(
+            `Transaction ${t.transactionHash} was succesfully simulated `
+        );
+        return undefined!;
     }
 }

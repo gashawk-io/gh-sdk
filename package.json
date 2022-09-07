@@ -1,6 +1,6 @@
 {
     "name": "@corpus-ventures/gashawk-sdk",
-    "version": "1.0.2",
+    "version": "1.0.8",
     "description": "",
     "scripts": {
         "compile": "hardhat compile",
@@ -19,11 +19,13 @@
     "devDependencies": {
         "@nomiclabs/hardhat-ethers": "^2.0.5",
         "@types/chai": "^4.3.1",
+        "@types/chai-as-promised": "^7.1.5",
         "@types/mocha": "^9.1.1",
         "@types/node": "^16.11.32",
         "@types/uuid": "^8.3.4",
         "babel-eslint": "^10.1.0",
         "chai": "^4.3.6",
+        "chai-as-promised": "^7.1.1",
         "chai-bignumber": "^3.0.0",
         "chai-bn": "^0.3.1",
         "chai-ethers": "^0.0.1",
@@ -43,7 +45,7 @@
         "timeout": 10000000
     },
     "dependencies": {
-        "@corpus-ventures/gashawk-common": "0.7.3",
+        "@corpus-ventures/gashawk-common": "0.7.5",
         "axios": "^0.27.2",
         "dayjs": "^1.11.5",
         "ethers": "^5.6.9"
