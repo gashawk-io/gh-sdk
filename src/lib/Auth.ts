@@ -15,7 +15,7 @@ export class Auth {
         const createdAt = new Date().getTime();
         const authMessage = getAuthMessage(createdAt);
 
-        if (!(await this.promtTermsOfService())) {
+        if (!(await this.promptTermsOfService())) {
             throw new TermsRejectedException();
         }
 
@@ -34,7 +34,7 @@ export class Auth {
         return newSessionJwt;
     }
 
-    private static async promtTermsOfService(): Promise<boolean> {
+    private static async promptTermsOfService(): Promise<boolean> {
         const terms = getTermsOfService();
         console.log(terms);
         console.log("\n");
