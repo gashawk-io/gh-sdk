@@ -16,7 +16,7 @@ jobs:
               with:
                   node-version: 16
             - run: npm ci
-            - run: npm prepublish
+            - run: npm run prepublish
 
     publish-npm:
         needs: build
