@@ -1,7 +1,4 @@
-import {
-    getAuthMessage,
-    getTermsForSignature,
-} from "@corpus-ventures/gashawk-common";
+import { getAuthMessage, getTermsForSignature } from "gashawk-common";
 import { ethers } from "ethers";
 import LoginFailedException from "../Exceptions/LoginFailedException";
 import { AuthClient } from "../http/AuthClient";
@@ -46,7 +43,7 @@ export class Auth {
 
         return new Promise((res) => {
             rl.question(
-                "Do you accept the Terms of Service ? Press y or yes to accept\n",
+                "Do you accept the Terms of Service ? Press y or yes to accsept\n",
                 (input: string) => {
                     if (
                         input.toLowerCase() === "y" ||

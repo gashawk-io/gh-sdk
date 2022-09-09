@@ -1,7 +1,7 @@
 import {
     DEADLINE_DURATION_DEFAULT,
     SubmitableTransaction,
-} from "@corpus-ventures/gashawk-common";
+} from "gashawk-common";
 import { ethers, providers } from "ethers";
 import { GashawkClient } from "../http/GashawkClient";
 import { v4 as uuidv4 } from "uuid";

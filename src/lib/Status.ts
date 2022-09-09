@@ -1,9 +1,6 @@
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
-import {
-    TransactionState,
-    TransactionWithFee,
-} from "@corpus-ventures/gashawk-common";
+import { TransactionState, TransactionWithFee } from "gashawk-common";
 import { ethers } from "ethers";
 import { TransactionReceipt } from "@ethersproject/abstract-provider";
 import { GashawkClient } from "../http/GashawkClient";

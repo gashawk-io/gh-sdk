@@ -1,8 +1,10 @@
-import { TransactionWithFee } from "@corpus-ventures/gashawk-common";
+import { TransactionWithFee } from "gashawk-common";
 import { GashawkClient } from "../http/GashawkClient";
 
 export class Transaction {
-    public static async getAll(client: GashawkClient): Promise<TransactionWithFee[]> {
+    public static async getAll(
+        client: GashawkClient
+    ): Promise<TransactionWithFee[]> {
         const txs = await client.getTransactions();
 
         if (txs === null) {

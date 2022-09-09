@@ -1,4 +1,4 @@
-import { TransactionWithFee } from "@corpus-ventures/gashawk-common";
+import { TransactionWithFee } from "gashawk-common";
 import {
     TransactionRequest,
     TransactionResponse,

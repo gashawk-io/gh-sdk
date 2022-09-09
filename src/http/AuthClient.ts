@@ -1,4 +1,4 @@
-import { LoginPayload } from "@corpus-ventures/gashawk-common";
+import { LoginPayload } from "gashawk-common";
 import axios, { Axios } from "axios";
 
 export class AuthClient {
