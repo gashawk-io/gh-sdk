@@ -48,6 +48,7 @@
         "axios": "^0.27.2",
         "dayjs": "^1.11.5",
         "ethers": "^5.6.9",
-        "gashawk-common": "^0.8.2"
+        "gashawk-common": "^0.8.2",
+        "uuid": "^9.0.0"
     }
 }
