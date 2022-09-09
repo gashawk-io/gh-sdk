@@ -4,7 +4,7 @@ import {
     TransactionWithFee,
     UserSettings,
     USER_SETTINGS_DEFAULT,
-} from "@corpus-ventures/gashawk-common";
+} from "gashawk-common";
 import axios, { Axios } from "axios";
 
 export class GashawkClient {

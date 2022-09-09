@@ -1,7 +1,4 @@
-import {
-    getAuthMessage,
-    getTermsForSignature,
-} from "@corpus-ventures/gashawk-common";
+import { getAuthMessage, getTermsForSignature } from "gashawk-common";
 import { ethers } from "ethers";
 import LoginFailedException from "../Exceptions/LoginFailedException";
 import { AuthClient } from "../http/AuthClient";

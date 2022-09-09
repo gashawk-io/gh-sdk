@@ -1,4 +1,4 @@
-import { LoginPayload } from "@corpus-ventures/gashawk-common";
+import { LoginPayload } from "gashawk-common";
 import chai from "chai";
 import { Signer } from "ethers";
 import { ethers } from "hardhat";
