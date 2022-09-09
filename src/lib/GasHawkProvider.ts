@@ -39,8 +39,8 @@ export class GasHawkProvider extends ethers.providers.StaticJsonRpcProvider {
             params ?? {}
         );
         const hash = ethers.utils.keccak256(_signedTransaction);
-        
-        console.log(`Transaction ${hash} was send to GasHawk`);
+
+        console.log(`Transaction ${hash} was sent to GasHawk`);
         return Promise.resolve({
             ...tx,
             from: tx.from!,
