@@ -6,6 +6,7 @@ import {
     USER_SETTINGS_DEFAULT,
 } from "gashawk-common";
 import axios, { Axios } from "axios";
+import { GASHAWK_BACKEND_URL } from "../constants";
 
 export class GashawkClient {
     private TRANSACTION_VIEW_PATH = "/view/tx";
@@ -13,12 +14,11 @@ export class GashawkClient {
     private SETTINGS_PATH = "/user/settings";
 
     private token: string;
-    private BACKEND_URL = "https://dev.gashawk.io:3000";
     protected client: Axios;
 
     constructor(token: string) {
         this.client = axios.create({
-            baseURL: this.BACKEND_URL,
+            baseURL: GASHAWK_BACKEND_URL,
         });
         this.token = token;
     }

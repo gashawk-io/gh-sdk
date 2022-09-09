@@ -1,14 +1,14 @@
 import { LoginPayload } from "gashawk-common";
 import axios, { Axios } from "axios";
+import { GASHAWK_BACKEND_URL } from "../constants";
 
 export class AuthClient {
     protected client: Axios;
-    private BACKEND_URL = "https://dev.gashawk.io:3000";
     private AUTH_PATH = "/auth";
 
     constructor() {
         this.client = axios.create({
-            baseURL: this.BACKEND_URL,
+            baseURL: GASHAWK_BACKEND_URL,
         });
     }
 

@@ -10,6 +10,7 @@ import { GashawkClient } from "./http/GashawkClient";
 import { Auth } from "./lib/Auth";
 import { Transaction } from "./lib/Transaction";
 import { NoProviderException } from "./Exceptions/NoProviderException";
+import { GASHAWK_FRONTEND_URL } from "./constants";
 
 export class Gashawk {
     private signer: ethers.Signer;
@@ -117,7 +118,7 @@ export class Gashawk {
         });
     }
     private static logTokenLink(token: string) {
-        const link = `https://dev-fe.gashawk.io/#/token?jwt=${token}`;
+        const link = `${GASHAWK_FRONTEND_URL}/#/token?jwt=${token}`;
 
         console.log(
             "Open the link to see your transaction in the GasHawk Web App \n"
