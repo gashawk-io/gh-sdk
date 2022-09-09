@@ -20,6 +20,7 @@ typechain/
 !.vscode/extensions.json.default
 
 node_modules/
+dist/
 .env
 
 .yalc

@@ -1,6 +1,6 @@
 import {
     getAuthMessage,
-    getTermsOfService,
+    getTermsForSignature,
 } from "@corpus-ventures/gashawk-common";
 import { ethers } from "ethers";
 import LoginFailedException from "../Exceptions/LoginFailedException";
@@ -35,7 +35,7 @@ export class Auth {
     }
 
     private static async promptTermsOfService(): Promise<boolean> {
-        const terms = getTermsOfService();
+        const terms = getTermsForSignature();
         console.log(terms);
         console.log("\n");
 
