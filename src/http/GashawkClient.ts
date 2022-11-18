@@ -9,8 +9,8 @@ import axios, { Axios } from "axios";
 import { GASHAWK_BACKEND_URL } from "../constants";
 
 export class GashawkClient {
-    private TRANSACTION_VIEW_PATH = "/view/tx";
-    private SUBMIT_PATH = "/submit";
+    private TRANSACTION_PATH = "/tx";
+    private SUBMIT_PATH = "/tx/submit";
     private SETTINGS_PATH = "/user/settings";
 
     private token: string;
@@ -31,7 +31,7 @@ export class GashawkClient {
         };
     }
     public async getTransactions(): Promise<TransactionWithFee[] | null> {
-        const url = `${this.TRANSACTION_VIEW_PATH}/userTransactions`;
+        const url = `${this.TRANSACTION_PATH}/txList`;
         try {
             const { data } = await this.client.get(url, this.getAuth());
             return data as TransactionWithFee[];
@@ -44,7 +44,7 @@ export class GashawkClient {
     public async getTransaction(
         id: string
     ): Promise<TransactionWithFee | null> {
-        const url = `${this.TRANSACTION_VIEW_PATH}/userTransactionById/${id}`;
+        const url = `${this.TRANSACTION_PATH}/byId/${id}`;
         try {
             const { data } = await this.client.get(url, this.getAuth());
             return data as TransactionWithFee;
@@ -80,7 +80,7 @@ export class GashawkClient {
         from: string
     ): Promise<number | null> {
         try {
-            const url = `/status/transactionCount/${from}`;
+            const url = `/user/transactionCount/${from}`;
             const { status, data } = await this.client.get(url, this.getAuth());
             if (status !== 200) {
                 throw new Error("Cant get users transaction count");
