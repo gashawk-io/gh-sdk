@@ -44,9 +44,12 @@ export class GashawkClient {
     public async getTransaction(
         id: string
     ): Promise<TransactionWithFee | null> {
-        const url = `${this.TRANSACTION_PATH}/byId/${id}`;
+        const url = `${this.TRANSACTION_PATH}/byId`;
         try {
-            const { data } = await this.client.get(url, this.getAuth());
+            const { data } = await this.client.get(url, {
+                params: { id },
+                ...this.getAuth(),
+            });
             return data as TransactionWithFee;
         } catch (err) {
             console.log(err);
@@ -77,11 +80,14 @@ export class GashawkClient {
     }
 
     public async getUsersTransactionCount(
-        from: string
+        user: string
     ): Promise<number | null> {
         try {
-            const url = `/user/transactionCount/${from}`;
-            const { status, data } = await this.client.get(url, this.getAuth());
+            const url = `/user/transactionCount`;
+            const { status, data } = await this.client.get(url, {
+                params: { user },
+                ...this.getAuth(),
+            });
             if (status !== 200) {
                 throw new Error("Cant get users transaction count");
             }
